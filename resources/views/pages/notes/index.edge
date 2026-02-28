@@ -1,0 +1,46 @@
+@layout()
+  <div class="form-container">
+    <div>
+      <h1>My Notes</h1>
+      <p>Manage your personal notes</p>
+    </div>
+
+    <div>
+      <div style="margin-bottom: 1rem;">
+        @link({ href: route('notes.create'), text: 'Create New Note' })
+        @end
+      </div>
+
+      @if(notes.length === 0)
+        <p>You don't have any notes yet. Create your first note above!</p>
+      @else
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          @each(note in notes)
+            <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 4px;">
+              <h2 style="margin: 0 0 0.5rem 0;">
+                <a href="{{ route('notes.show', { id: note.id }) }}" style="text-decoration: none; color: inherit;">
+                  {{ note.title }}
+                </a>
+              </h2>
+              <p style="margin: 0 0 0.5rem 0; color: #666;">
+                {{ note.content.substring(0, 150) }}{{ note.content.length > 150 ? '...' : '' }}
+              </p>
+              <div style="display: flex; gap: 1rem; font-size: 0.9rem;">
+                @link({ href: route('notes.show', { id: note.id }), text: 'View' })
+                @end
+                @link({ href: route('notes.edit', { id: note.id }), text: 'Edit' })
+                @end
+                <form method="POST" action="{{ route('notes.destroy', { id: note.id }) }}" style="display: inline;">
+                  {{ csrfField() }}
+                  <button type="submit" style="background: none; border: none; color: #dc2626; cursor: pointer; text-decoration: underline;">
+                    Delete
+                  </button>
+                </form>
+              </div>
+            </div>
+          @end
+        </div>
+      @end
+    </div>
+  </div>
+@end

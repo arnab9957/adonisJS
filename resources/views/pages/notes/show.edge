@@ -1,0 +1,29 @@
+@layout()
+  <div class="form-container">
+    <div>
+      <h1>{{ note.title }}</h1>
+      <p style="color: #666; font-size: 0.9rem;">
+        Created on {{ note.createdAt.toFormat('MMMM dd, yyyy') }}
+      </p>
+    </div>
+
+    <div>
+      <div style="white-space: pre-wrap; line-height: 1.6; margin-bottom: 2rem;">
+        {{ note.content }}
+      </div>
+
+      <div style="display: flex; gap: 1rem;">
+        @link({ href: route('notes.edit', { id: note.id }), text: 'Edit Note' })
+        @end
+        @link({ href: route('notes.index'), text: 'Back to Notes' })
+        @end
+        <form method="POST" action="{{ route('notes.destroy', { id: note.id }) }}" style="display: inline;">
+          {{ csrfField() }}
+          <button type="submit" style="background: none; border: none; color: #dc2626; cursor: pointer; text-decoration: underline;">
+            Delete Note
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+@end
